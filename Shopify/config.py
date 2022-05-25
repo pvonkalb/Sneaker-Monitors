@@ -1,15 +1,15 @@
 # --------------------- WEBHOOK URL ---------------------
-WEBHOOK = ""
+WEBHOOK = "https://discord.com/api/webhooks/900538417870413834/XCNGQX6-v2_1LC5geNYAS2r8Ltq0OHoCqa-QjMnooYOX5YsGrvRR61e72AOG5xtDboib"
 
 # --------------------- SHOPIFY URL ---------------------
 # Insert the url of the Shopify store here. Ensure that it points to /products.json
 # E.G. URL = "https://www.hanon-shop.com/collections/whats-new/products.json"
-URL = "https://www.hanon-shop.com/collections/whats-new/products.json"
+URL = "https://hormesispaintball.com/products.json"
 
 # --------------------- FREE PROXY ---------------------
 # Multiple locations can be added in the array (e.g. ["GB", "US"])
 ENABLE_FREE_PROXY = False
-FREE_PROXY_LOCATION = ["GB"]
+FREE_PROXY_LOCATION = ["GB", "US", "FR"]
 
 # --------------------- DELAY ---------------------
 # This is the delay between checks. If you start to get error messages, it's best to increase this.
@@ -28,6 +28,6 @@ PROXY = []
 KEYWORDS = []
 
 # --------------------- DISCORD BOT FEATURES ---------------------
-USERNAME = "Nike SNKRS"
-AVATAR_URL = "http://logostories.com/wp-content/uploads/2015/10/image-nike-logo-4.png"
-COLOUR = 16777215
+USERNAME = "Hormesis Monitor"
+AVATAR_URL = "https://cdn.shopify.com/s/files/1/0461/1099/8696/files/3cm_hormesis_logo-01_110x.png?v=1605131491"
+COLOUR = 5793266
