@@ -148,7 +148,7 @@ def comparitor(product, start):
     available_sizes = []
     for size in product['variants']:
         if size['available']: # Makes an ATC link from the variant ID
-            available_sizes.append({'title': size['title'], 'url': '[Add To Cart](' + CONFIG['URL'][:CONFIG['URL'].find('/', 10)] + '/cart/' + str(size['id']) + ':1)', 'price': size['price'],})
+            available_sizes.append({'title': size['title'], 'url': '[Add To Cart](' + config.URL['URL'][:config.URL.find('/', 10)] + '/cart/' + str(size['id']) + ':1)', 'price': size['price'],})
 
 
     product_item.append(available_sizes) # Appends in field
