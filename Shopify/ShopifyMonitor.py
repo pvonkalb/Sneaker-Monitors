@@ -51,19 +51,19 @@ def scrape_site(url, headers, proxy):
             for product in output:
                 try:
                     product_item = {
-                        'title': product['title'], 
-                        'image': product['images'][0]['src'], 
+                        'title': product['title'],
+                        'image': product['images'][0]['src'],
                         'handle': product['handle'],
                         'variants': product['variants']}
                 except:
                     product_item = {
-                        'title': product['title'], 
-                        'image': None, 
+                        'title': product['title'],
+                        'image': None,
                         'handle': product['handle'],
                         'variants': product['variants']}
                 items.append(product_item)
             page += 1
-    
+
     logging.info(msg='Successfully scraped site')
     s.close()
     return items
@@ -84,7 +84,7 @@ def test_webhook():
             "title": "Testing Webhook",
             "description": "This is just a quick test to ensure the webhook works. Thanks again for using these monitors!",
             "color": int(config.COLOUR),
-            "footer": {'text': 'Made by Yasser'},
+            "footer": {'text': 'Did you snag one?'},
             "timestamp": str(datetime.utcnow())
         }]
     }
@@ -107,18 +107,19 @@ def discord_webhook(title, url, thumbnail, sizes):
     """
     fields = []
     for size in sizes:
-        fields.append({"name": size['title'], "value": size['url'], "inline": True})
+        fields.append({"name": size['title'], "value": size['url'] + '\n\$' + size['price'], "inline": True})
 
     data = {
         "username": config.USERNAME,
         "avatar_url": config.AVATAR_URL,
+        "content": "@everyone",
         "embeds": [{
             "title": title,
-            "url": config.URL.replace('.json', '/') + url, 
+            "url": config.URL.replace('.json', '/') + url,
             "thumbnail": {"url": thumbnail},
             "fields": fields,
             "color": int(config.COLOUR),
-            "footer": {"text": "Made by Yasser"},
+            "footer": {"text": "Did you snag one?"},
             "timestamp": str(datetime.utcnow()),
         }]
     }
@@ -147,17 +148,17 @@ def comparitor(product, start):
     available_sizes = []
     for size in product['variants']:
         if size['available']: # Makes an ATC link from the variant ID
-            available_sizes.append({'title': size['title'], 'url': '[ATC](' + config.URL[:config.URL.find('/', 10)] + '/cart/' + str(size['id']) + ':1)'})
+            available_sizes.append({'title': size['title'], 'url': '[Add To Cart](' + CONFIG['URL'][:CONFIG['URL'].find('/', 10)] + '/cart/' + str(size['id']) + ':1)', 'price': size['price'],})
 
-    
+
     product_item.append(available_sizes) # Appends in field
-    
+
     if available_sizes:
         if not checker(product_item):
             # If product is available but not stored - sends notification and stores
-            
+
             INSTOCK.append(product_item)
-            
+
             if start == 0:
                 print(product_item)
                 discord_webhook(
@@ -181,12 +182,7 @@ def monitor():
     print('''\n---------------------------
 --- MONITOR HAS STARTED ---
 ---------------------------\n''')
-    print(''' ** Now you will recieve notifications when an item drops or restocks **
-This may take some time so you have to leave this script running. It's best to do this on a server (you can get a free one via AWS)!
-    
-Check out the docs at https://yasserqureshi1.github.io/Sneaker-Monitors/ for more info.
-    
-Join the Sneakers & Code family via Discord and subscribe to my YouTube channel https://www.youtube.com/c/YasCode\n\n''')
+    print(''' ** You will now recieve notifications when an item drops or restocks ** ''')
     logging.info(msg='Successfully started monitor')
 
     # Checks URL
@@ -213,7 +209,7 @@ Join the Sneakers & Code family via Discord and subscribe to my YouTube channel 
     keywords = config.KEYWORDS
     while True:
         try:
-            # Makes request to site and stores products 
+            # Makes request to site and stores products
             items = scrape_site(config.URL, proxy, headers)
             for product in items:
 
@@ -239,7 +235,7 @@ Join the Sneakers & Code family via Discord and subscribe to my YouTube channel 
 
             # Rotates headers
             headers['User-Agent'] = user_agent_rotator.get_random_user_agent()
-            
+
             if config.ENABLE_FREE_PROXY:
                 proxy = {'http': proxy_obj.get()}
 
@@ -249,7 +245,7 @@ Join the Sneakers & Code family via Discord and subscribe to my YouTube channel 
 
         except Exception as e:
             print(f"Exception found: {traceback.format_exc()}")
-            logging.error(e)   
+            logging.error(e)
 
 
 if __name__ == '__main__':
